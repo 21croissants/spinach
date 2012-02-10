@@ -3,7 +3,9 @@ require "bundler/setup" rescue nil
 
 # otherwise bin/spinach will load spinach gem when running tests within Guard:()
 require_relative '../lib/spinach'
+require_relative '../lib/spinach/'
 
 cli = Spinach::Cli.new(ARGV)
+cli.runner = Spinach::SpikeRunner
 cli.init_reporter
 exit cli.run

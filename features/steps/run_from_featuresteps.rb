@@ -6,19 +6,23 @@ class RunFromFeaturesteps < Spinach::FeatureSteps
 
   Given 'I have a feature that has some successful steps' do
     write_file('features/steps/test_feature.rb',
-               'class ATestFeature < Spinach::FeatureSteps
+       'class ATestFeature < Spinach::FeatureSteps
           feature "A test feature"
 
-          Given "I am a fool" do
-          end
+          Scenario "Codegram really rocks!" do
 
-          When "I jump from Codegrams roof" do
-          end
+            Given "I am a fool" do
+            end
 
-          Then "I must succeed" do
-            true
+            When "I jump from Codegrams roof" do
+            end
+
+            Then "I must succeed" do
+              true
+            end
+
           end
-         end')
+        end')
     @feature = "features/steps/test_feature.rb"
   end
 

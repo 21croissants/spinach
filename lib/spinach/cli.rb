@@ -5,12 +5,17 @@ module Spinach
   # logic.
   #
   class Cli
+
+    # Dependency injection just for the time of the spike
+    attr_writer :runner_class
+
     # @param [Array<String>] arguments
     #   The command line arguments
     #
     # @api public
     def initialize(args = ARGV)
       @args = args
+      @runner_class =  Spinach::Runner
     end
 
     # Runs all the features.
@@ -26,7 +31,7 @@ module Spinach
       else
         Dir.glob(File.join Spinach.config[:features_path], '**', '*.feature')
       end
-      Spinach::Runner.new(features).run
+      @runner_class.new(features).run
     end
 
     # Inits the reporter with a default one.
