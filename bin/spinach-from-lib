@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require "bundler/setup" rescue nil
+
+# otherwise bin/spinach will load spinach gem when running tests within Guard:()
+require_relative '../lib/spinach'
+
+cli = Spinach::Cli.new(ARGV)
+cli.init_reporter
+exit cli.run
