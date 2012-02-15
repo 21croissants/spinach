@@ -3,12 +3,15 @@ Feature: Run from FeatureSteps
   As a test writer
   I want to spike if I can tweak the FeatureRunner to run from a Spinach::FeatureSteps class
 
+  Or shall I juse use https://github.com/elight/coulda ?
+
   UML sequence diagram for current Spinach Runner is:
+
 
   bin/spinach->Cli: run
   Cli->Runner: run
   Runner->Parser: open_file(filename).parse
-  Runner->FeatureRunner: new(Gherkin::AST::Feature).run
+  Runner->FeatureRunner: new(Spinach::Feature).run
   FeatureRunner->FeatureRunner: run_scenarios!
   FeatureRunner->ScenarioRunner: new(Gherkin::AST::Scenario).run
   ScenarioRunner->ScenarioRunner:run_step(Gherkin::AST::Step)
@@ -25,6 +28,7 @@ Feature: Run from FeatureSteps
   bin/spinach->Cli: run
   Cli->Runner: run
   Runner->FeatureRunner: new(FeatureSteps class).run
+
   FeatureRunner->FeatureRunner: run_scenarios!
   FeatureRunner->ScenarioRunner: new(Spinach::Scenario).run
   ScenarioRunner->FeatureSteps: find_steps

@@ -68,7 +68,13 @@ module Spinach
     klass = Spinach::Support.camelize(name)
     feature_steps.detect do |feature|
       feature.feature_name.to_s == name.to_s ||
-        feature.name == klass
+              feature.name == klass
+    end
+  end
+
+  def self.find_step_definitions_class(class_name)
+    feature_steps.detect do |feature_class|
+      feature_class.to_s == class_name
     end
   end
 end

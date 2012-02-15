@@ -19,6 +19,21 @@ module Spinach
     module ClassMethods
       # The feature name.
       attr_reader :feature_name
+
+      attr_reader :spinach_feature
+
+      def Scenario(name, &block)
+        add_scenario name
+        yield block
+      end
+
+      def add_scenario(name)
+        scenario = Spinach::Scenario.new(@spinach_feature)
+        scenario.name = name
+        @current_scenario = scenario
+        @spinach_feature.scenarios << scenario
+      end
+
       # Defines an action to perform given a particular step literal.
       #
       # @param [String] step
@@ -37,6 +52,14 @@ module Spinach
       # @api public
       def Given(step, &block)
         define_method(Spinach::Support.underscore(step), &block)
+        add_step step
+      end
+
+      def add_step(step_name)
+        return unless @current_scenario
+        spinach_step = Spinach::Step.new(@current_scenario)
+        spinach_step.name, spinach_step.keyword = step_name, "Given" # TODO define_method here
+        @current_scenario.steps << spinach_step
       end
 
       alias_method :When, :Given
@@ -57,6 +80,8 @@ module Spinach
       # @api public
       def feature(name)
         @feature_name = name
+        @spinach_feature = Spinach::Feature.new
+        @spinach_feature.name = name
       end
     end
 

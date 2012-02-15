@@ -15,7 +15,7 @@ module Spinach
     # @api public
     def initialize(args = ARGV)
       @args = args
-      @runner_class =  Spinach::Runner
+      @runner_class = Spinach::Runner
     end
 
     # Runs all the features.
@@ -96,7 +96,8 @@ module Spinach
           end
         end.parse!(@args)
 
-        Spinach.config.parse_from_file
+        # FIXME 21croissants: lib/spinach/config.rb:115:in `parse_from_file': undefined method `load_file' for YAML:Module (NoMethodError)
+        # Spinach.config.parse_from_file
         config.each{|k,v| Spinach.config[k] = v}
       rescue OptionParser::ParseError => exception
         puts exception.message.capitalize

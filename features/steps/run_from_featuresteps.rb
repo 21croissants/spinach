@@ -2,12 +2,11 @@ class RunFromFeaturesteps < Spinach::FeatureSteps
   feature 'Run from FeatureSteps'
 
   include Integration::SpinachRunner
-  include Integration::SpinachRunnerFromFeatureSteps
 
   Given 'I have a feature that has some successful steps' do
     write_file('features/steps/test_feature.rb',
-       'class ATestFeature < Spinach::FeatureSteps
-          feature "A test feature"
+               'class TestFeature < Spinach::FeatureSteps
+          feature "Test feature"
 
           Scenario "Codegram really rocks!" do
 
@@ -26,12 +25,19 @@ class RunFromFeaturesteps < Spinach::FeatureSteps
     @feature = "features/steps/test_feature.rb"
   end
 
-  When 'I run it' do
-    run_feature @feature
-  end
 
+  When 'I run it' do
+    run_steps @feature
+  end
 
   Then 'it should pass' do
     @stdout.must_match /Summary: \(3\) Successful/
+  end
+
+  def run_steps(command, options={})
+    options[:framework] ||= :minitest
+    use_minitest if options[:framework] == :minitest
+    use_rspec if options[:framework] == :rspec
+    run "../../bin/spinach-from-lib #{command} #{options[:append]}"
   end
 end

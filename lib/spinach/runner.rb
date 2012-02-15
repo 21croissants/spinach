@@ -4,6 +4,9 @@ module Spinach
   #
   class Runner
 
+    # Dependency injection just for the time of the spike
+    attr_writer :parser_class
+
     # The feature files to run
     attr_reader :filenames
 
@@ -35,6 +38,8 @@ module Spinach
 
       @support_path = options.delete(:support_path ) ||
         Spinach.config.support_path
+
+      @parser_class ||= Parser
     end
 
     # The feature files to run
@@ -63,7 +68,7 @@ module Spinach
       filenames.map do |filename|
         filename.split(':')
       end.each do |filename, line|
-        feature = Parser.open_file(filename).parse
+        feature = @parser_class.open_file(filename).parse
         success = FeatureRunner.new(feature, line).run
         successful = false unless success
       end
